@@ -39,6 +39,7 @@ struct Turnos{
 };
 
 void menu();
+void InicioSesion();
 
 int main()
 {
@@ -46,12 +47,21 @@ int main()
     FILE *arch_veterinarios = fopen("Veterinarios.dat", "a+b");
     FILE *arch_mascotas = fopen ("Mascotas.dat", "a+b");
     FILE *arch_turnos = fopen("Turnos.dat", "a+b");
-    
 
     menu();
-
-
+	
+	
+	fclose(arch_usuarios);
+	fclose(arch_veterinarios);
+	fclose(arch_mascotas);
+	fclose(arch_turnos);
+	
     return 0;
+}
+
+void InicioSesion()
+{
+	
 }
 
 void menu()
@@ -72,6 +82,7 @@ void menu()
         {
         case 1:
             system("cls");
+            InicioSesion();
             break;
 
         case 2:
