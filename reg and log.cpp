@@ -4,6 +4,7 @@
 #include <conio.h>
 #include <wchar.h>
 #include <locale.h>
+#include <ctype.h>
 
 struct Usuarios{
 	char Usuario[10];
@@ -71,7 +72,44 @@ int main()
 	
 	system("cls");
 	printf("Hola %s!, Ingrese su contraseña:\n",reg.Usuario);
-	gets(reg.Contrasenia);
+	reg.Contrasenia[0] = getch();
+	i=0;
+	while(i<32)
+	{
+		printf("*");
+		i++;
+		reg.Contrasenia[i]=getch();
+		if(reg.Contrasenia[i]==13)
+		{
+			reg.Contrasenia[i] = '\0';
+			break;
+		}
+	}
+	
+	i=0;
+	char letra0, letra1;
+		bool bandera = true;			// si es verdadera la contraseña cumple con la regla. Si es falsa no cumple con la regla.
+	
+	while(i<32 || reg.Contrasenia[i] != '\0')
+	{
+		if(isalpha(reg.Contrasenia[i]) && isalpha(reg.Contrasenia[i+1]))
+		{ 	//determino si es alfabetico, es decir una letra.
+			letra0=toupper(reg.Contrasenia[i]);			//convierto la letra a mayuscula si esta en mayuscula no hace nada.
+			letra1=toupper(reg.Contrasenia[i+1]);		//convierto la letra Siguiente a mayuscula si esta en mayuscula no hace nada.
+			if(letra0+1==letra1){			//Verifico que no sea dos consecutiva.
+				bandera = false;					//indicaria que no cumple con la regla.
+				break;							// termino el ciclo.
+			}
+		}
+		i++;
+	}
+	if(bandera)
+		printf("\t\n\n Cumple con la regla");
+	else
+		printf("\t\n\n NOOO cumple con la regla");
+	
+	
+	//gets(reg.Contrasenia);
 	a=strlen(reg.Contrasenia);
 	int band2=0;
 	while(band2==0)
@@ -120,7 +158,6 @@ int main()
 			printf("No puede haber signos de puntuacion en su contraseña");
 			
 		else
-		
 		band2=1;
 	}
 	
