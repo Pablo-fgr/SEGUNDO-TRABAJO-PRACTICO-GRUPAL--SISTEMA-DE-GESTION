@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <conio.h>
+#include <ctype.h>
+#include <string.h>
 
 struct Fecha{
 	int Dia;
@@ -40,13 +42,14 @@ struct Turnos{
 
 void menu();
 void InicioSesion();
+void RegistarMascota();
 
 int main()
 {
-    FILE *arch_usuarios = fopen("Usuarios.dat", "a+b");
-    FILE *arch_veterinarios = fopen("Veterinarios.dat", "a+b");
-    FILE *arch_mascotas = fopen ("Mascotas.dat", "a+b");
-    FILE *arch_turnos = fopen("Turnos.dat", "a+b");
+    FILE *arch_usuarios = fopen("Usuarios.dat", "ab");
+    FILE *arch_veterinarios = fopen("Veterinarios.dat", "ab");
+    FILE *arch_mascotas = fopen ("Mascotas.dat", "ab");
+    FILE *arch_turnos = fopen("Turnos.dat", "ab");
 
     menu();
 	
@@ -61,20 +64,59 @@ int main()
 
 void InicioSesion()
 {
+	FILE *arch_usuarios = fopen("Usuarios.dat", "ab");
 	
+	printf("\nIngrese el nombre de usuario: ");
+	
+	
+	fclose(arch_usuarios);
+}
+
+void RegistrarMascota()
+{
+	system("COLOR B0");
+	
+	FILE *arch_mascotas;
+	
+	arch_mascotas = fopen ("Mascotas.dat", "ab");
+	
+	Mascota pet;
+	
+	printf("\n\t                       REGISTRO DE ASISTENTES                           ");
+	printf("\n\t                      ------------------------                      \n\n");
+									    
+    printf("\n\tIngrese los datos del asistente que desea registrar:\n");
+   	printf("\t------------------------------------------------------");
+   															  
+	printf("\n\n\t--->Apellido y nombre: ");
+	
+	
+	fclose(arch_mascotas);
 }
 
 void menu()
 {
+	system("COLOR A1");
     int opcion;
-    printf("\t\tModulo del asistente\n");
-    printf("\t\t=============================\n");
-    printf("\t\t 1.- Iniciar sesion\n");
-    printf("\t\t 2.- Registrar mascota\n");
-    printf("\t\t 3.- Registrar turno\n");
-    printf("\t\t 4.- Listado de Atenciones por Veterinario y Fecha\n");
-    printf("\t\t 5.- Cerrar la aplicacion\n\n");
-    printf("\t\t Ingrese una opcion: ");
+    
+    
+    printf("\n\t                       B I E N V E N I D O                          ");
+	printf("\n\t                      ---------------------                         \n\n");
+    printf("\n\t*********************** MODULO ASISTENTE ****************************");    
+	printf("\n\t**                                                                 **");
+	printf("\n\t** (1)  -> INICIAR SESION                                          **");
+	printf("\n\t**                                                                 **");
+	printf("\n\t** (2)  -> REGISTRAR MASCOTA                                       **");
+	printf("\n\t**                                                                 **");
+	printf("\n\t** (3)  -> REGISTRAR TURNO                                         **");
+	printf("\n\t**                                                                 **");
+	printf("\n\t** (4)  -> LISTADO DE ATENCIONES POR VETERINARIO Y FECH            **");
+	printf("\n\t**                                                                 **"); 
+	printf("\n\t**                                                                 **");
+	printf("\n\t** (5)  -> CERRAR LA APLICACION                                    **");
+	printf("\n\t**                                                                 **");																			   
+	printf("\n\t*********************************************************************");
+	printf("\n\n\tIngrese su opcion:");
     scanf("%d", &opcion);
     do
     {
@@ -87,6 +129,7 @@ void menu()
 
         case 2:
             system("cls");
+            RegistrarMascota();
             break;
         
         case 3:
@@ -98,7 +141,7 @@ void menu()
             break;
 
         case 5:
-            printf("\n\nSaliendo del programa....\n\n\n");
+            printf("\n\n\tSaliendo del programa....\n\n\n");
             break;
 
         default: printf("\nERROR - No se reconoce la opcion\n");
