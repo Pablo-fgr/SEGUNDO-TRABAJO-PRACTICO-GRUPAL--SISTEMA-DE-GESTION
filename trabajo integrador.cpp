@@ -7,7 +7,9 @@ typedef char registroVeterinarios[50];
 
 struct day
 {
-	char dayLaborable[80];
+	char dias[80];
+	float horaInicio[80];
+	float horaFin[80];
 	
 };
 	
@@ -25,7 +27,8 @@ struct registrosVeterinarios
        /*atenciones:*/
 
 		int cantDias;	   
-		   								      
+		day atencion[7];
+		 					      
  	   
 };
 
@@ -40,7 +43,8 @@ struct registrosUsuariosAsist
 void menuprincipal();
 void registrarVet();
 void registrarAsist();
-void registrarAtenciones(FILE *arch, registrosVeterinarios reg, arreglo day[7]);
+void registrarAtenciones(FILE *arch, registrosVeterinarios reg);
+void rankingAtenciones(FILE *arch,registrosVeterinarios reg);
 
 
 main()
@@ -58,7 +62,7 @@ void menuprincipal()
  	 	int opcion;
 		FILE *arch;	
 		registrosVeterinarios reg;	 
-        arreglo day[7];
+        
   
 	 do
 	 {
@@ -96,9 +100,14 @@ void menuprincipal()
 	    }
 		if(opcion==3)
 		{
-		 	registrarAtenciones(arch,reg,day);
+		 	registrarAtenciones(arch,reg);
 			printf("\n");	 		 
-	    }    
+	    } 
+		if(opcion==4)
+		{
+		 	rankingAtenciones(arch,reg);
+			printf("\n");	 		 
+	    }   
 			
 	}while(opcion!= 0);
 	
@@ -108,7 +117,7 @@ void registrarVet()
 {
 		 system("COLOR A0");
  	     FILE *arch;
-	 	 arch = fopen("veterinarios.dat", "a+b");
+	 	 arch = fopen("Veterinarios.dat", "a+b");
 		 registrosVeterinarios reg;
 		  	   
   
@@ -174,7 +183,7 @@ void registrarAsist()
 {        
 		 system("COLOR B0");
  	     FILE *arch1;
-	 	 arch1 = fopen("usuarios.dat", "a+b");
+	 	 arch1 = fopen("Usuarios.dat", "a+b");
 		 registrosUsuariosAsist reg1;
 	   
 		
@@ -225,65 +234,177 @@ void registrarAsist()
 		fclose(arch1);
  
 } 
-void registrarAtenciones(FILE *arch,registrosVeterinarios reg,arreglo day[7])
+void registrarAtenciones(FILE *arch,registrosVeterinarios reg)
 {        
-		 system("COLOR e0");
-	 	 arch = fopen("veterinarios.dat", "a+b");
-		 fread(&reg, sizeof(reg), 1, arch); 	   
-		 rewind(arch);
+				 system("COLOR e0");
+			 	 arch = fopen("Veterinarios.dat", "a+b");
+				 fread(&reg, sizeof(reg), 1, arch); 	   
+				 rewind(arch);
+				  	   
+				int buscarMat,n;
+				
 		  	   
-		int buscarMat,n;
-		  	   
-		system("CLS");	   	  						     
-        printf("\n\t                    ATENCION DE VETERINARIOS                          ");
-		printf("\n\t                    ------------------------                      \n\n");	
+				system("CLS");	   	  						     
+		        printf("\n\t                    ATENCION DE VETERINARIOS                          ");
+				printf("\n\t                    ------------------------                      \n\n");	
 		
-		while(!feof(arch))
-		{
-			    printf("\n\tIngrese la matricula del veterinario para cargar sus dias de atencion:\n");
-		   		printf("\t------------------------------------------------------------------------");
+		
+				printf("\n\tIngrese la matricula del veterinario para cargar sus dias de atencion:\n");
+		   		printf("\t-----------------------------------------------------------------------");
 		   		
 				_flushall();   													  
 				printf("\n\n\t--->Matricula: ");						   
 		  		scanf("%d",&buscarMat);
 		
+		
+		
 				if(buscarMat == reg.matricula)
 		  		{
   			 	 		printf("\n\n\n");	 
-				   		printf("\n\tIngrese la cantidad de días de atencion: ");
+				   		printf("\n\t°Ingrese la cantidad de dias de atencion: ");
 						scanf("%d",&reg.cantDias); 
 						getchar();  
 						
 						_flushall();
-						printf("\n\tA continuacion ingrese los DIAS: \n");							 	   		
+						printf("\n\t°A continuacion ingrese los DIAS: \n");							 	   		
 						
-						for(int i=1; i<reg.cantDias; i++)
+						for(int i=1; i<=reg.cantDias; i++)
 						{
 							printf("\n\tDia %d --->",i);
-							scanf("%s",&day[i]);
-							
+							scanf("%s",reg.atencion[i].dias);
 									 				 	   
 						}
 						 														   									  
-					
-						 rewind(arch);														   									  
+
+						rewind(arch);														   									  
 						_flushall();
+						printf("\n\n");
+						printf("\n\t°Ingrese los horarios de cada dia: \n");							 	   		
 						
-						system("PAUSE");																										  		 													   
-						printf("\n\n\tLos dias son:");
-						for(int i=1; i<reg.cantDias; i++)
+						for(int i=1; i<=reg.cantDias; i++)
 						{
-						 	printf("\n\tDIA %d: ",i);
-							printf("%s",day[i]);		 				 	   
-						}	 				  
-		  		}
+							printf("\n\tDia (%d) %s:",i,reg.atencion[i].dias);
+							printf("\n\tHora inicio --->");
+							scanf("%f",&reg.atencion[i].horaInicio[i]);
+							printf("\tHora fin --->");
+							scanf("%f",&reg.atencion[i].horaFin[i]);
+							printf("\n\n");
+									 				 	   
+						}
+																				   									  
+						
+					
+					rewind(arch);
+					
+					printf("\n");		
+					_flushall();
+					printf("\n\t********************* HORARIOS DE ATENCION *************************");    
+					for(int i=1; i<=reg.cantDias; i++)
+					{
+						 	printf("\n\tDia (%d) %s:",i,reg.atencion[i].dias);
+							printf("\n\tDesde %.2f Hasta %.2f hs.",reg.atencion[i].horaInicio[i],reg.atencion[i].horaFin[i]);
+							printf("\n\n");
+					 				 	   
+					}
+					printf("\n\t********************************************************************");
+					printf("\n");
+					
+				}
+				
 				else
 				{
 		  		 	printf("\n\n\tLa matricula ingresada es incorrecta");				   		   			  	
 				}  
-										 	 	     		   	 			   		 		 		      
-	 	}
+		
+		   
+				system("pause");
 																																																																																																							  																										  		  					 													   	   	   		 					       		     	 						   	  		  				   																							 	 		 		      
-		fwrite(&reg, sizeof(reg), 1, arch);																																																																																																																																																																																																											  																																																																																																						  																										  		  					 													   	   	   		 					       		     	 						   	  		  				   																							 	 		 		      
-		fclose(arch); 
+			fwrite(&reg, sizeof(reg), 1, arch);																																																																																																																																																																																																											  																																																																																																						  																										  		  					 													   	   	   		 					       		     	 						   	  		  				   																							 	 		 		      
+			fclose(arch); 
+			
+}
+
+
+struct matriculas
+{
+	int numMatriculas[100];
+	int cantidadTurnos[100];
+};
+
+struct vets
+{
+	int vetEnMes;
+	matriculas ingresoMatriculas[50]; 	
+};
+
+
+void rankingAtenciones(FILE *arch,registrosVeterinarios reg)
+{
+	    system("CLS");
+		system("COLOR 3f");
+			
+	    arch = fopen("Veterinarios.dat", "r");
+		fread(&reg, sizeof(reg), 1, arch); 	   
+		rewind(arch);
+		
+		vets registro;
+		int mayor=0;
+		int ganadorRanking=0;	 
+	
+	
+		printf("\n\t            Bienvenidos al ranking de veterinarios!\n\t         El nuevo incentivo para nuestros veterinarios");
+		printf("\n\t-----------------------------------------------------------------                      \n\n");
+	
+																		   
+		printf("\n\tPara la medicion del ranking del veterinario con mayor atencion \n\ten el periodo debera ingresar la matricula de todos los \n\tveterinarios que trabajaron en el mes.\n\n");
+		
+		printf("\n\tPrimer paso");
+		printf("\n\t-----------\n\n");
+		
+		printf("\n\tIngrese la cantidad de veterinarios que trabajaron en el mes:");
+		scanf("%d",&registro.vetEnMes);
+		
+		
+		_flushall();
+		
+		for(int i=1 ; i<=registro.vetEnMes ; i++)
+		{
+			printf("\n\tIngrese la matricula del veterinario %d: ",i);
+			scanf("%d",&registro.ingresoMatriculas[i].numMatriculas[i]);
+			
+			printf("\n\tIngrese la cantidad de turnos atendidos del veterinario %d: ",i);
+			scanf("%d",&registro.ingresoMatriculas[i].cantidadTurnos[i]);
+			
+			printf("\n\n");
+			
+		}
+	
+		printf("\n\n\tPor favor espere un momento...\n\t");
+		getchar();
+		
+		
+		for(int i=1 ; i<=registro.vetEnMes ; i++)
+		{	
+			if(registro.ingresoMatriculas[i].cantidadTurnos[i] > mayor)
+			{
+				mayor = registro.ingresoMatriculas[i].cantidadTurnos[i];
+				ganadorRanking = registro.ingresoMatriculas[i].numMatriculas[i];
+				
+			
+			}
+		}
+			printf("\n\t--->El veterinario con mayor ranking de atenciones es el\n\tque posee la matricula numero: %d",ganadorRanking);
+			printf("\n");
+		
+		printf("\n\n\n");
+		
+		printf("\n\t******************************************************************");    
+		printf("\n\n\t|GANADOR DEL BONO MENSUAL: DOCTOR MATRICULADO CON MATRICULA %d|\n", ganadorRanking);		
+		printf("\n\t******************************************************************");
+					
+		
+	 system("pause");
+
+	 fclose(arch);
+	
 }
