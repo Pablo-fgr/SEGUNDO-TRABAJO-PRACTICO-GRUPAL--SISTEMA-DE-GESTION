@@ -3,6 +3,8 @@
 #include <conio.h>
 #include <ctype.h>
 #include <string.h>
+#include <wchar.h>
+#include <locale.h>
 
 struct Fecha{
 	int Dia;
@@ -43,10 +45,11 @@ struct Turnos{
 void menu();
 void InicioSesion();
 void RegistarMascota();
+void RegistrarTurno();
 
 int main()
 {
-
+	setlocale(LC_ALL, "");
     menu();
 	
 	
@@ -81,37 +84,107 @@ void RegistrarMascota()
    	printf("\t------------------------------------------------------");
    															  
 	printf("\n\n\t--->Apellido y nombre: ");
+	_flushall();
+	gets(pet.Apellido_y_Nombre);
 	
+	printf("\n\n\t--->Domicilio: ");
+	_flushall();
+	gets(pet.Domicilio);
+	
+	printf("\n\n\t--->DNI del dueño: ");
+	scanf("%d", &pet.DNI_duenio);
+	
+	printf("\n\n\t--->Localidad: ");
+	_flushall();
+	gets(pet.Localidad);
+	
+	printf("\n\n\t--->Fecha de nacimiento: ");
+	printf("\n\n\t\t--->Dia: ");
+	scanf("%d", &pet.Fecha_de_Nacimiento.Dia);
+	printf("\n\t\t--->Mes: ");
+	scanf("%d", &pet.Fecha_de_Nacimiento.Mes);
+	printf("\n\t\t--->Año: ");
+	scanf("%d", &pet.Fecha_de_Nacimiento.Anio);
+	
+	printf("\n\n\t--->Peso en kg: ");
+	scanf("%f", &pet.Peso);
+	
+	printf("\n\n\t--->Telefono: ");
+	_flushall();
+	gets(pet.Telefono);
+	
+	getch();
+	
+	fwrite(&pet, sizeof(Mascota),1,arch_mascotas);
 	
 	fclose(arch_mascotas);
 }
 
+void RegistrarTurno()
+{
+	system("COLOR F5");
+	
+	FILE *arch_turnos;
+	
+	arch_turnos = fopen ("Turnos.dat", "a+b");
+	
+	Turnos turnos;
+	
+	printf("\n\t                       REGISTRO DE TURNOS                           ");
+	printf("\n\t                      --------------------                      \n\n");
+									    
+    printf("\n\tIngrese los datos correspondientes para el turno a registrar :\n");
+   	printf("\t----------------------------------------------------------------");
+   															  
+	printf("\n\n\t--->Matricula del veterinario: ");
+	scanf("%d", &turnos.Matricula_de_veterinario);
+	
+	printf("\n\n\t--->Fecha: ");
+	printf("\n\n\t\t->Dia: ");
+	scanf("%d", &turnos.fecha.Dia);
+	printf("\n\t\t->Mes: ");
+	scanf("%d", &turnos.fecha.Mes);
+	printf("\n\t\t->Año: ");
+	scanf("%d", &turnos.fecha.Anio);
+	
+	printf("\n\n\t--->DNI del dueño: ");
+	scanf("%d", &turnos.DNI_duenio);
+	
+	printf("\n\n\t--->Detalle de atención: ");
+	_flushall();
+	gets(turnos.Detalle_de_atencion);
+	getch();
+	
+	fwrite(&turnos, sizeof(Turnos), 1, arch_turnos);
+	fclose(arch_turnos);
+}
+
 void menu()
 {
-	system("COLOR A1");
     int opcion;
     
-    
-    printf("\n\t                       B I E N V E N I D O                          ");
-	printf("\n\t                      ---------------------                         \n\n");
-    printf("\n\t*********************** MODULO ASISTENTE ****************************");    
-	printf("\n\t**                                                                 **");
-	printf("\n\t** (1)  -> INICIAR SESION                                          **");
-	printf("\n\t**                                                                 **");
-	printf("\n\t** (2)  -> REGISTRAR MASCOTA                                       **");
-	printf("\n\t**                                                                 **");
-	printf("\n\t** (3)  -> REGISTRAR TURNO                                         **");
-	printf("\n\t**                                                                 **");
-	printf("\n\t** (4)  -> LISTADO DE ATENCIONES POR VETERINARIO Y FECH            **");
-	printf("\n\t**                                                                 **"); 
-	printf("\n\t**                                                                 **");
-	printf("\n\t** (5)  -> CERRAR LA APLICACION                                    **");
-	printf("\n\t**                                                                 **");																			   
-	printf("\n\t*********************************************************************");
-	printf("\n\n\tIngrese su opcion:");
-    scanf("%d", &opcion);
     do
     {
+    	system("cls");
+    	system("COLOR E0");
+    	printf("\n\t                       B I E N V E N I D O                          ");
+		printf("\n\t                      ---------------------                         \n\n");
+   		printf("\n\t*********************** MODULO ASISTENTE ****************************");    
+		printf("\n\t**                                                                 **");
+		printf("\n\t** (1)  -> INICIAR SESION                                          **");
+		printf("\n\t**                                                                 **");
+		printf("\n\t** (2)  -> REGISTRAR MASCOTA                                       **");
+		printf("\n\t**                                                                 **");
+		printf("\n\t** (3)  -> REGISTRAR TURNO                                         **");
+		printf("\n\t**                                                                 **");
+		printf("\n\t** (4)  -> LISTADO DE ATENCIONES POR VETERINARIO Y FECHA           **");
+		printf("\n\t**                                                                 **"); 
+		printf("\n\t**                                                                 **");
+		printf("\n\t** (5)  -> CERRAR LA APLICACION                                    **");
+		printf("\n\t**                                                                 **");																			   
+		printf("\n\t*********************************************************************");
+		printf("\n\n\tIngrese su opcion:");
+  		scanf("%d", &opcion);
         switch (opcion)
         {
         	case 1:
@@ -126,6 +199,7 @@ void menu()
         
         	case 3:
             system("cls");
+            RegistrarTurno();
             break;
 
         	case 4:
