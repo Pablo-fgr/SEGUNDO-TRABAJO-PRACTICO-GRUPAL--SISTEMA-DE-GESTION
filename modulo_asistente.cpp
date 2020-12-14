@@ -46,18 +46,9 @@ void RegistarMascota();
 
 int main()
 {
-    FILE *arch_usuarios = fopen("Usuarios.dat", "ab");
-    FILE *arch_veterinarios = fopen("Veterinarios.dat", "ab");
-    FILE *arch_mascotas = fopen ("Mascotas.dat", "ab");
-    FILE *arch_turnos = fopen("Turnos.dat", "ab");
 
     menu();
 	
-	
-	fclose(arch_usuarios);
-	fclose(arch_veterinarios);
-	fclose(arch_mascotas);
-	fclose(arch_turnos);
 	
     return 0;
 }
@@ -74,18 +65,19 @@ void InicioSesion()
 
 void RegistrarMascota()
 {
+	_flushall();
 	system("COLOR B0");
 	
 	FILE *arch_mascotas;
 	
-	arch_mascotas = fopen ("Mascotas.dat", "ab");
+	arch_mascotas = fopen ("Mascotas.dat", "a+b");
 	
 	Mascota pet;
 	
-	printf("\n\t                       REGISTRO DE ASISTENTES                           ");
-	printf("\n\t                      ------------------------                      \n\n");
+	printf("\n\t                       REGISTRO DE MASCOTAS                           ");
+	printf("\n\t                      -----------------------                      \n\n");
 									    
-    printf("\n\tIngrese los datos del asistente que desea registrar:\n");
+    printf("\n\tIngrese los datos de la mascota que desea registrar:\n");
    	printf("\t------------------------------------------------------");
    															  
 	printf("\n\n\t--->Apellido y nombre: ");
@@ -122,29 +114,29 @@ void menu()
     {
         switch (opcion)
         {
-        case 1:
+        	case 1:
             system("cls");
             InicioSesion();
             break;
 
-        case 2:
+        	case 2:
             system("cls");
             RegistrarMascota();
             break;
         
-        case 3:
+        	case 3:
             system("cls");
             break;
 
-        case 4:
+        	case 4:
             system("cls");
             break;
 
-        case 5:
+        	case 5:
             printf("\n\n\tSaliendo del programa....\n\n\n");
             break;
 
-        default: printf("\nERROR - No se reconoce la opcion\n");
+        	default: printf("\nERROR - No se reconoce la opcion\n");
             break;
         }
     } while (opcion != 5);
