@@ -106,8 +106,11 @@ int main()
 	else{
 		printf("\nSu contrasenia no cumple con la longitud deseada. Vuelva a ingresarla por favor.\n");	
 	}
-	for(j=0;j<l;j++){  //se revisa los numeros consecutivos
+	
+	//se revisa los numeros consecutivos
+	for(j=0;j<l;j++){  
 		valorNumerico=reg.Contrasenia[j];
+		
 		if(valorNumerico>47 and valorNumerico<58){
 			CaracteresConsecutivos++;
 		
@@ -143,14 +146,16 @@ int main()
 	
 	//letras mayusculas,minusculas y numeros
 	for(j=0;j<l;j++){
+		
 		letraActual=reg.Contrasenia[j];
+		
 		if(letraActual==toupper(letraActual)){
 			mayus++;
 		}
 		if(letraActual==tolower(letraActual)){
 			minus++;
 		}
-		if(letraActual>47 and letraActual<56){
+		if(letraActual>47 and letraActual<58){
 			digitos++;
 		}
 	}
@@ -161,6 +166,7 @@ int main()
 		printf("\nSu contraseña carece de letras mayusculas/minusculas o algun numero. Vuelva a ingresar la clave por favor .\n");
 		i=0;
 	}
+	
 	i++;
 	for(j=0;j<l-1;j++){
 		numero_letra1= toupper(reg.Contrasenia[j]);
@@ -174,14 +180,14 @@ int main()
 	}
 
     if(i==5){
-    	system("cls");
+    	system("pause");
 	}
 	else{
 		system("pause");
 		system("cls");
 	}
 
-	}while(i!=5);
+	}while(i==5);
 
 	printf("\nUsuario registrado con exito\n");
 	_flushall();
