@@ -107,6 +107,10 @@ void menuprincipal()
 		{
 		 	rankingAtenciones(arch,reg);
 			printf("\n");	 		 
+	    }
+		if(opcion==5)
+		{
+		 	exit(1);	 		 
 	    }   
 			
 	}while(opcion!= 0);
