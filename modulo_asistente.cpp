@@ -6,7 +6,8 @@
 #include <wchar.h>
 #include <locale.h>
 
-struct Fecha{
+struct Fecha
+{
 	int Dia;
 	int Mes;
 	int Anio;
@@ -46,6 +47,8 @@ void menu();
 void InicioSesion();
 void RegistarMascota();
 void RegistrarTurno();
+void ListadoAtenciones();
+
 
 int main()
 {
@@ -159,6 +162,40 @@ void RegistrarTurno()
 	fclose(arch_turnos);
 }
 
+void ListadoAtenciones()
+{
+	FILE *arch_turnos = fopen("Turnos.dat", "rb");
+	FILE *arch_veterinarios = fopen("Veterinarios.dat", "rb");
+	
+	
+	
+	Turnos turnos;
+	Veterinario reg;
+	_flushall();
+	rewind(arch_turnos);
+	rewind(arch_veterinarios);
+	
+	printf("\n\t*************************** LISTADO ********************************");    
+					
+					fread(&turnos, sizeof(turnos), 1, arch_turnos);
+					fread(&reg, sizeof(reg), 1, arch_veterinarios);
+					while(!feof(arch_turnos) && !feof(arch_veterinarios))
+					{
+						
+						printf("\n\tFecha: %d/%d/%d", turnos.fecha.Dia, turnos.fecha.Mes, turnos.fecha.Anio);
+						printf("\n\tVeterinario: %s", reg);	
+						fread(&turnos, sizeof(Turnos), 1, arch_turnos);
+						fread(&reg, sizeof(Veterinario), 1, arch_veterinarios);
+					}
+					getch();
+					printf("\n\t********************************************************************");
+					printf("\n");
+	
+	
+	fclose(arch_turnos);
+	fclose(arch_veterinarios);
+}
+
 void menu()
 {
     int opcion;
@@ -204,6 +241,7 @@ void menu()
 
         	case 4:
             system("cls");
+            ListadoAtenciones();
             break;
 
         	case 5:
