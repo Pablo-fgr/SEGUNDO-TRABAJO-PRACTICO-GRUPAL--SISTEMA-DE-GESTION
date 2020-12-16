@@ -18,6 +18,7 @@ struct Veterinario{
 	int Matricula;
 	int Dni;
 	char Telefono[25];
+	char ContraUsuarioVet[50];
 };
 
 struct Mascota{
@@ -66,8 +67,11 @@ main()
 void menuprincipal()
 {
  	 	int opcion;
-		  	 
-	   system("CLS");
+		  	
+		
+ do
+    {	 
+	  system("CLS");
 		printf("\n\t                       B I E N V E N I D O                          ");
 		printf("\n\t                      ---------------------                         \n\n");
 																							
@@ -86,9 +90,6 @@ void menuprincipal()
 		printf("\n\t*********************************************************************");
 		printf("\n\n\tIngrese su opcion:");
   		scanf("%d",&opcion);
-		
- do
-    {
         switch (opcion)
         {
         	case 1:
@@ -121,49 +122,45 @@ void menuprincipal()
 void InicioSesion()
 {
 	
-Usuarios reginicio;
 	
 Veterinario reg;
 
-
-
-  bool b=false;
-  char aux_usuario[20],aux_contrasenia[32], aux_apynom[30];
+ 
+  int aux_matricula;
+  char aux_contrasenia[32];
   FILE *arch_veterinarios = fopen("Veterinarios.dat", "r+b");
   
   system("cls");
   printf("\n\t INICIAR SESION\n\t ");
   _flushall();
-  printf("\n\t Ingrese su nombre de usuario =====> "); gets(aux_usuario);
+  printf("\n\t Ingrese su matricula =====> "); scanf("%d",&aux_matricula);
   _flushall();
   printf("\n\t Ingrese la contrase%ca =====> ",164);  gets(aux_contrasenia); //codico para poder poner la ñ
   
-  fread(&reginicio, sizeof(reginicio), 1, arch_veterinarios);
+  fread(&reg, sizeof(reg), 1, arch_veterinarios);
   while(!feof(arch_veterinarios))
   {
-  	if((strcmp(reginicio.Usuario,aux_usuario)==0) and (strcmp(reginicio.Contrasenia,aux_contrasenia)==0))
+  	if((reg.Matricula==aux_matricula)and(strcmp(aux_contrasenia,reg.ContraUsuarioVet)==0) )
   	{
-  		b=true;
-  		strcpy(aux_apynom,reg.Apellido_y_Nombre);
+  	    printf("\n\t se encontro el coso");
+  		getch();
+		break;
+  	
 	}
-	else{
-		b=false;
-	}
-	fread(&reginicio, sizeof(reginicio), 1, arch_veterinarios);
-  }
-  if(b==false)
-  {
-  	printf("\n el usuario no se encontro registrado");
+	  else{
+	    printf("\n\t no se encontro el coso");	
+		getch();
+		break;
+
+	    }
+	    
+	  fread(&reg, sizeof(reg), 1, arch_veterinarios); 
   }
   
-  if (b==true)
-  {
-  	printf("\n\tBIENVENIDO");   puts(aux_apynom);
-  }
-  else{
-  	printf("\n\tERROR ====> Nombre de usuario y contraseña no valido");
-  }
+  
+
   fclose(arch_veterinarios); 
+
 }
 
 void ListaDeEspera()
@@ -174,31 +171,68 @@ void ListaDeEspera()
 	FILE *arch_turnos = fopen("Turnos.dat", "rb");
 	FILE *arch_veterinarios = fopen("Veterinarios.dat", "rb");
 	
-	
 	Turnos turnos;
 	Veterinario reg;
-	_flushall();
-	rewind(arch_turnos);
-	rewind(arch_veterinarios);
 	
-	printf("\n\t*************************** LISTADO ********************************");    
+	
+	if(arch_turnos == NULL)
+	{
+		printf("\n\n\t Error - no se registro ningun turno. ");
+		getch();
+		exit(1);
+		
+	}
+	if(arch_veterinarios == NULL)
+	
+	{
+		printf("\n\n\t Error - No existe el archivo de veterinario. ");
+		getch();
+		exit(1);
+	}
+	else
+	{
+	
+		printf("\n\t*************************** LISTADO ********************************");    
 					
-					fread(&turnos, sizeof(turnos), 1, arch_turnos);
-					fread(&reg, sizeof(reg), 1, arch_veterinarios);
-					while(!feof(arch_turnos) && !feof(arch_veterinarios))
-					{
+		fread(&turnos, sizeof(turnos), 1, arch_turnos);
+		
+		
+												
+		while(!feof(arch_turnos))
+		{
+			printf("\n\n\t--->Matricula: %d", turnos.Matricula_de_veterinario);
 						
-						printf("\n\tFecha: %d/%d/%d", turnos.fecha.Dia, turnos.fecha.Mes, turnos.fecha.Anio);
-						printf("\n\tVeterinario: %s", reg);	
-						printf("\n\n");
-						fread(&turnos, sizeof(Turnos), 1, arch_turnos);
-						fread(&reg, sizeof(Veterinario), 1, arch_veterinarios);
-					}
-					getch();
-					printf("\n\t********************************************************************");
-					printf("\n");
+						
+						
+			fread(&reg, sizeof(reg), 1, arch_veterinarios);
+						
+			while(!feof(arch_veterinarios))
+			{
+							
+				if(turnos.Matricula_de_veterinario == reg.Matricula)
+				{
+					printf("\n\n\t--->Apellido y nombre del veterinario: %s", reg.Apellido_y_Nombre);
+								
+					break;
+										
+				}
+				
+							
+				fread(&reg, sizeof(reg), 1, arch_veterinarios);
+							
+			}
+						
+			printf("\n\n\t--->Fecha: %d/%d/%d", turnos.fecha.Dia, turnos.fecha.Mes, turnos.fecha.Anio);
+						
+						
+			fread(&turnos, sizeof(Turnos), 1, arch_turnos);
+						
+						
+			printf("\n\n\t********************************************************************\n");
+						
+		}
 	
-	
+	}
 	fclose(arch_turnos);
 	fclose(arch_veterinarios);	
  
@@ -207,6 +241,10 @@ void datosMascota()
 {
 	
 	char buscar_nombre[30];
+	int o;
+	char nombre_guardado[40];
+	int a;
+	
 	
 	_flushall();
 	system("COLOR B0");
@@ -216,16 +254,22 @@ void datosMascota()
 	FILE *arch_mascotas;
 	
 	arch_mascotas = fopen ("Mascotas.dat", "a+b");
-	fread(&pet, sizeof(pet), 1, arch_mascotas);
 	
-	int o;
+	/*fread(&pet, sizeof(pet), 1, arch_mascotas);*/
+	
+
 	
 	
 	printf("\n\t                        DATOS DE LA MASCOTA                            ");
 	printf("\n\t                      -----------------------                      \n\n");
 									    
     printf("\n\n");
-   															  
+   	rewind(arch_mascotas);
+	   fread(&pet, sizeof(pet), 1,arch_mascotas);
+	   printf("\t\t");
+while(!feof(arch_mascotas))
+{
+													  
 	_flushall();
 	printf("\n\tMascota---> %s",pet.Apellido_y_Nombre);
 	printf("\n\tFecha de nacimiento---> %d / %d / %d",pet.Fecha_de_Nacimiento.Dia,pet.Fecha_de_Nacimiento.Mes,pet.Fecha_de_Nacimiento.Anio);
@@ -234,15 +278,23 @@ void datosMascota()
 	printf("\n\tDomicilio---> %s",pet.Domicilio);
 	printf("\n\tLocalidad---> %s",pet.Localidad);
 	printf("\n\tTelefono---> %s",pet.Telefono);
+	fread(&pet, sizeof(Mascota),1,arch_mascotas);
 	
+	system("pause");
+}
 	//buscar mascota
+
+	rewind(arch_mascotas);
+	
+
+	fread(&nombre_guardado, sizeof(char), 1,arch_mascotas);
+
+while ( !feof(arch_mascotas) ) 
+{	
 	printf("\n\t Ingrese el nombre y apellido de la mascota:");
 	printf("\n\t=====>");
 	_flushall();
 	gets(buscar_nombre);
-	rewind(arch_mascotas);
-	fread(&buscar_nombre, sizeof(char), 1,arch_mascotas);
-
 	
 		if((strcmp(pet.Apellido_y_Nombre,buscar_nombre))==0)
 	    {
@@ -260,6 +312,18 @@ void datosMascota()
 			printf("\n\t------>");gets(historiaclinica.Detalle_de_atencion);
 			
 			printf("\n\n\n\tHistoria clinica creada con exito-\n");
+			printf("\n\t Quiere cargar otra historia clinica?. [1]si , [2]no");
+			printf("\n\t =====> ");
+			scanf("%d",&a);
+			
+			if((a==1) or (a==2)){
+				if(a==2)
+				{
+					printf("\n\tSALIENDO...");
+					exit(1);
+				}
+			}
+			
     	}
     	else
     	{// si se apreta cualquier otro boton que no sea 1 sale del programa
@@ -281,8 +345,12 @@ void datosMascota()
 	    	printf("\n\tSALIENDO....");
 	        exit(1);
 		}
+		if(p==1)
+		{
+			system("cls");
+		}
 	}
- 		
+}
 	getch();
 	
 	fclose(arch_mascotas);
