@@ -89,9 +89,52 @@ int main()
 
 void InicioSesion()
 {
-	FILE *arch_usuarios = fopen("Usuarios.dat", "ab");
+	FILE *arch_usuarios = fopen("Usuarios.dat", "rb");
 	
-	printf("\nIngrese el nombre de usuario: ");
+	printf("\n\t                       B I E N V E N I D O                          ");
+	printf("\n\t                      ---------------------                         \n\n");
+   	printf("\n\t*********************** INCIO DE SESION ****************************");  
+	
+	if(arch_usuarios == NULL)
+	{
+		printf("\n\n\t ERROR - No se registro ningun usuario. ");
+		exit(1);
+	}
+	
+	Usuarios reg1;
+	
+	char usuario1[10];
+	   
+	printf("\n\n\t--->Ingrese el usuario: ");
+	_flushall();
+	gets(usuario1);
+	
+	
+	
+	do
+	{
+		rewind(arch_usuarios);
+	
+		fread(&reg1, sizeof(reg1), 1, arch_usuarios);
+		while(!feof(arch_usuarios))
+		{
+			if(strcmp(usuario1, reg1.Usuario)==0)
+			{
+				printf("\n\n\t [ Usuario Correcto!...]");
+				getch();
+				break;
+			}	
+			else
+			{
+				printf("\n\n\t [ Error de Usuario! ]");
+				getch();
+			}
+			
+		
+			fread(&reg1, sizeof(reg1), 1, arch_usuarios);
+		}  
+		
+	}while(strcmp(usuario1, reg1.Usuario) == 0);
 	
 	
 	fclose(arch_usuarios);
