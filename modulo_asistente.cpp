@@ -29,7 +29,8 @@ struct Usuarios
 
 /*-----Registro Datos de Veterinarios-----*/
 
-struct Veterinario{
+struct Veterinario
+{
 	char Apellido_y_Nombre[60];
 	int Matricula;
 	int Dni;
@@ -106,7 +107,7 @@ void RegistrarMascota()
 	
 	FILE *arch_mascotas;
 	
-	arch_mascotas = fopen ("Mascotas.dat", "a+b");
+	arch_mascotas = fopen ("Mascotas.dat", "ab");
 	
 	Mascota pet;
 	
@@ -190,11 +191,17 @@ void RegistrarTurno()
 {
 	system("COLOR F5");
 	
-	FILE *arch_turnos;
+	FILE *arch_turnos, *arch_veterinarios;
 	
-	arch_turnos = fopen ("Turnos.dat", "a+b");
+	arch_turnos = fopen ("Turnos.dat", "ab");
+	
+	arch_veterinarios = fopen("Veterinarios.dat", "rb");
 	
 	Turnos turnos;
+	
+	Veterinario reg;
+	
+	
 	
 	printf("\n\t                       REGISTRO DE TURNOS                           ");
 	printf("\n\t                      --------------------                      \n\n");
@@ -202,21 +209,65 @@ void RegistrarTurno()
     printf("\n\tIngrese los datos correspondientes para el turno a registrar :\n");
     
    	printf("\t----------------------------------------------------------------");
-   															  
+   		
+		   
+		   													  
 	printf("\n\n\t--->Matricula del veterinario: ");
 	
 	scanf("%d", &turnos.Matricula_de_veterinario);
 	
 	
+	fread(&reg, sizeof(reg), 1, arch_veterinarios);
+	
+
+	
+	while(!feof(arch_veterinarios))
+	{
+		if(turnos.Matricula_de_veterinario == reg.Matricula)
+		{
+			
+			printf("\n\t[ Matricula encontrada!...]");
+			
+		}
+		
+		fread(&reg, sizeof(reg), 1, arch_veterinarios);
+	}
+	
+	
+	
 	printf("\n\n\t--->Fecha: ");
 	
-	printf("\n\n\t\t->Dia: ");
+	do
+	{
 	
-	scanf("%d", &turnos.fecha.Dia);
+		printf("\n\n\t\t->Dia: ");
 	
-	printf("\n\t\t->Mes: ");
+		scanf("%d", &turnos.fecha.Dia);
+		
+		if(turnos.fecha.Dia < 1 || turnos.fecha.Dia > 31)
+		{
+			
+			printf("\n\n\t---> [Por favor, Reingrese el dia, [Valor entre 1 y 31] gracias.]");
+		
+		}
+		
+	}while(turnos.fecha.Dia < 1 || turnos.fecha.Dia > 31);
 	
-	scanf("%d", &turnos.fecha.Mes);
+	do
+	{
+	
+		printf("\n\t\t->Mes: ");
+	
+		scanf("%d", &turnos.fecha.Mes);
+		
+		if(turnos.fecha.Mes < 1 || turnos.fecha.Mes > 12)
+		{
+			
+			printf("\n\n\t---> [Por favor, Reingrese el mes, [Valor entre 1 y 12] gracias.]");
+			
+		}
+	
+	}while(turnos.fecha.Mes < 1 || turnos.fecha.Mes > 12);
 	
 	printf("\n\t\t->Año: ");
 	
@@ -243,11 +294,12 @@ void RegistrarTurno()
 	    printf("\t************************************************************\n\n");
 	
 	
-	fwrite(&turnos, sizeof(Turnos), 1, arch_turnos);
+	fwrite(&turnos, sizeof(turnos), 1, arch_turnos);
 	
 	
 	getch();
 	
+	fclose(arch_veterinarios);
 	
 	fclose(arch_turnos);
 	
@@ -262,53 +314,71 @@ void ListadoAtenciones()
 	FILE *arch_veterinarios = fopen("Veterinarios.dat", "rb");
 	
 	
+	Turnos turnos;
+	
+	
+	Veterinario reg;
+	
+	
 	if(arch_turnos == NULL || arch_veterinarios== NULL)
 	{
-		printf("\n\n\tERROR - NO EXISTEN LOS ARCHIVOS!!");
+		printf("\n\n\tERROR - NO EXISTE EL ARCHIVO!!\n\n");
 		
 		system("pause");
 		
 		exit(1);
 	}
-	
-	
-	Turnos turnos;
-	
-	Veterinario reg;
-	
-	_flushall();
-	
-	rewind(arch_turnos);
-	
-	rewind(arch_veterinarios);
-	
-	
-	printf("\n\t*************************** LISTADO ********************************");    
+	else
+	{
+		
+		printf("\n\t*************************** LISTADO DE ATENCIONES********************************");    
+		
+		
 					
-					fread(&turnos, sizeof(turnos), 1, arch_turnos);
+		fread(&turnos, sizeof(turnos), 1, arch_turnos);
+		
+		
+												
+		while(!feof(arch_turnos))
+		{
+			printf("\n\n\t--->Matricula: %d", turnos.Matricula_de_veterinario);
+						
+						
+						
+			fread(&reg, sizeof(reg), 1, arch_veterinarios);
+						
+			while(!feof(arch_veterinarios))
+			{
+							
+				if(turnos.Matricula_de_veterinario == reg.Matricula)
+				{
+					printf("\n\n\t--->Apellido y nombre del veterinario: %s", reg.Apellido_y_Nombre);
+								
+					break;
+										
+				}
+				
+							
+				fread(&reg, sizeof(reg), 1, arch_veterinarios);
+							
+			}
+						
+			printf("\n\n\t--->Fecha: %d/%d/%d", turnos.fecha.Dia, turnos.fecha.Mes, turnos.fecha.Anio);
+						
+						
+			fread(&turnos, sizeof(Turnos), 1, arch_turnos);
+						
+						
+			printf("\n\n\t********************************************************************\n");
+						
+		}
+	}
 					
-					fread(&reg, sizeof(reg), 1, arch_veterinarios);
+	getch();
 					
-					while(!feof(arch_turnos) && !feof(arch_veterinarios))
-					{
-						
-						printf("\n\n\t--->Fecha: %d/%d/%d", turnos.fecha.Dia, turnos.fecha.Mes, turnos.fecha.Anio);
-						
-						printf("\n\n\t--->Veterinario: %s", reg.Apellido_y_Nombre);	
-						
-						fread(&turnos, sizeof(Turnos), 1, arch_turnos);
-						
-						fread(&reg, sizeof(Veterinario), 1, arch_veterinarios);
-						
-						printf("\n\n\t********************************************************************\n");
-						
-					}
+	printf("\n\t********************************************************************");
 					
-					getch();
-					
-					printf("\n\t********************************************************************");
-					
-					printf("\n");
+	printf("\n");
 	
 	
 	fclose(arch_turnos);
