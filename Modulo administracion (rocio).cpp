@@ -53,7 +53,8 @@ void registrarAsist();
 void registrarAtenciones(FILE *arch, registrosVeterinarios reg);
 void rankingAtenciones(FILE *arch,registrosVeterinarios reg);
 bool buscar_usuario(char user[10]);
-bool buscar_veterinario(int matricula);
+bool validacion(int aux,FILE *arch,registrosVeterinarios reg);
+
 
 
 main()
@@ -174,26 +175,10 @@ void registrarVet()
   						 
 		printf("\n\n\tDatos guardados correctamente-\n\n");
 		
-		
-		
-		
-				do
-				{
-					h= buscar_veterinario(reg.UsuarioVet);
-					if(h == false)
-					{
-						printf("\n\n\t ERROR - ESTA MATRICULA YA ESTA REGISTRADA\n\n");
-						getch();
-						exit(1);
-					}
-					
-					
-				}while(h == false);
+	
 				
-				aux=reg.matricula;
-				reg.UsuarioVet = aux;
-				
-		
+		aux=reg.matricula;
+		reg.UsuarioVet = aux;
 			  
 		printf("\n\tSu nombre de usuario es coincidente con su matricula--->%d",reg.UsuarioVet);	
 		
@@ -214,13 +199,13 @@ void registrarVet()
 		
 				printf("\n\t(1) - Debe contener una letra mayuscula, una letra minuscula y un numero.\n");
 				printf("\n\t(2) - Solo deben ser caracteres alfanumericos.\n");
-				printf("\n\t(3) - Tener una longirud de entre 6 y 32 caracteres.\n");
+				printf("\n\t(3) - Tener una longitud de entre 6 y 32 caracteres.\n");
 				printf("\n\t(4) - No debe tener mas de tres caracteres numericos consecutivos.\n");
 				printf("\n\t(5) - No debe tener 2 caracteres consecutivos que refieran a letras\n\t   alfabeticamente consecutivas.\n");
 				  		
 		  						  
 				_flushall();  
-/*CONTRA*/		printf("\n\n\tIngrese su Contraseña:\n");
+/*CONTRA*/		printf("\n\n\tIngrese su Contrasenia:\n");
 				printf("\t--->Contrasena: ");
 		  		gets(reg.ContraUsuarioVet);
 		  		
@@ -320,7 +305,7 @@ void registrarVet()
 			
 			    if(i==5)
 				{
-			    	printf("\n\n\tContraseña registrada con exito  :)\n");
+			    	printf("\n\n\tContrasenia registrada con exito  :)\n");
 					printf("\t-----------------------------------\n");
 					_flushall();
 			
@@ -396,10 +381,12 @@ void registrarAsist()
 		printf("\n\n\n");
 		 				   
 /*uSUARIO*/		
+					printf("\n\n\tIngrese el usuario: ");
+					printf("\n\t---->");
+			
 		  		do
 				{
-					printf("\n\n\t--->Ingrese el usuario: ");
-					printf("\n\t--->");
+				
 					_flushall();
 					gets(reg1.UsuarioAsistente);
 					h = buscar_usuario(reg1.UsuarioAsistente);
@@ -495,8 +482,8 @@ do{
 				  		
 		  						  
 				_flushall();  
-/*CONTRA*/		printf("\n\n\tIngrese su Contraseña:\n");
-				printf("\t--->Contrasena: ");
+/*CONTRA*/		printf("\n\n\tIngrese su Contrasenia:\n");
+				printf("\t--->Contrasenia: ");
 		  		gets(reg1.ContraUsuarioAsistente);
 		  		
 		  		
@@ -577,7 +564,7 @@ do{
 					i++;
 				}
 				else{
-					printf("\n\n\tLa contraseña carece de letras mayusculas/minusculas o algun numero.\n\t                  Reintente.\n");
+					printf("\n\n\tLa contrasenia carece de letras mayusculas/minusculas o algun numero.\n\t                  Reintente.\n");
 					i=0;
 				}
 				
@@ -595,7 +582,7 @@ do{
 			
 			    if(i==5)
 				{
-			    	printf("\n\n\tContraseña registrada con exito  :)\n");
+			    	printf("\n\n\tContrasenia registrada con exito  :)\n");
 					printf("\t-----------------------------------\n");
 					_flushall();
 			
@@ -629,6 +616,11 @@ void registrarAtenciones(FILE *arch,registrosVeterinarios reg)
 {        
 				 system("COLOR e0");
 			 	 arch = fopen("Veterinarios.dat", "a+b");
+			 	 
+			 	 FILE *arch_turnos;
+	
+				 arch_turnos = fopen ("Turnos.dat", "ab");
+			 	 				  				  			 	 
 				 fread(&reg, sizeof(reg), 1, arch); 	   
 				 rewind(arch);
 				 
@@ -645,12 +637,14 @@ void registrarAtenciones(FILE *arch,registrosVeterinarios reg)
 		do
 		{
 			
-				printf("\n\tIngrese la matricula del veterinario para cargar sus dias de atencion:\n");
+				printf("\n\tIngrese la matricula del veterinario para ver los dias de atencion:\n");
 		   		printf("\t-----------------------------------------------------------------------");
 		   		
 				_flushall();   													  
 				printf("\n\n\t--->Matricula: ");						   
 		  		scanf("%d",&buscarMat);
+		  		
+		  						  		  		
 		
 				
 				if(buscarMat = reg.matricula)
@@ -715,6 +709,7 @@ void registrarAtenciones(FILE *arch,registrosVeterinarios reg)
 					
 					if(op!=1)
 					{
+						printf("\n\n\tGracias");
 						exit(1);
 					}
 					fwrite(&reg, sizeof(reg), 1, arch);
@@ -763,10 +758,12 @@ void rankingAtenciones(FILE *arch,registrosVeterinarios reg)
 		
 		vets registro;
 		int mayor=0;
-		int ganadorRanking=0;	 
+		int ganadorRanking=0;	
+		bool h;
+		int aux;
+		
 	
-while(!feof(arch))
-{
+
 		printf("\n\t            Bienvenidos al ranking de veterinarios!\n\t         El nuevo incentivo para nuestros veterinarios");
 		printf("\n\t-----------------------------------------------------------------                      \n\n");
 	
@@ -778,19 +775,47 @@ while(!feof(arch))
 		
 		printf("\n\tIngrese la cantidad de veterinarios que trabajaron en el mes:");
 		scanf("%d",&registro.vetEnMes);
-		
+		printf("\n\n");
 		
 		_flushall();
 		fread(&reg, sizeof(reg), 1, arch);
 		
 		for(int i=1 ; i<=registro.vetEnMes ; i++)
 		{
+			printf("\t------------------------------------------------------------");			
 			printf("\n\tIngrese la matricula del veterinario %d: ",i);
 			scanf("%d",&registro.ingresoMatriculas[i].numMatriculas[i]);
 			
-			printf("\n\tIngrese la cantidad de turnos atendidos del veterinario %d: ",i);
-			scanf("%d",&registro.ingresoMatriculas[i].cantidadTurnos[i]);
-			printf("\n\n");
+			aux=registro.ingresoMatriculas[i].numMatriculas[i];
+			 
+				do
+				{
+					h= validacion(aux,arch,reg);
+					if(h == true)
+					{
+						printf("\n\n\t\t -MATRICULA RECONOCIDA- \n\n");
+						getch();
+						
+						
+						printf("\tIngrese la cantidad de turnos atendidos del veterinario %d: ",i);
+						scanf("%d",&registro.ingresoMatriculas[i].cantidadTurnos[i]);
+						printf("\t------------------------------------------------------------");
+						printf("\n\n");
+						
+					}else
+					{
+						printf("\n\n\t\t -MATRICULA NO RECONOCIDA- \n\n");
+						printf("\n\n\tSaliendo...");
+						getch();
+						exit(1);
+					}
+					
+					
+				}while(h == false);
+			
+			
+			
+		
 			
 		}
 	
@@ -808,8 +833,10 @@ while(!feof(arch))
 			
 			}
 		}
-			printf("\n\t--->El veterinario con mayor ranking de atenciones es el\n\tque posee la matricula numero: %d",ganadorRanking);
-			printf("\n");
+
+		printf("\n\t--->El veterinario con mayor ranking de atenciones es el\n\tque posee la matricula numero: %d",ganadorRanking);
+		printf("\n");
+
 		
 		printf("\n\n\n");
 		
@@ -817,13 +844,14 @@ while(!feof(arch))
 		printf("\n\n\t*|GANADOR DEL BONO MENSUAL: DOCTOR MATRICULADO CON MATRICULA %d|*\n", ganadorRanking);		
 		printf("\n\t******************************************************************\n\t");
 					
-		
-	 system("pause");  
 
-}
+
+		fclose(arch);
+	    system("pause");  
+
 
 																																																																																																																																																																																																												  																																																																																																						  																										  		  					 													   	   	   		 					       		     	 						   	  		  				   																							 	 		 		      
-		fclose(arch); 
+		 
 	
 }
 bool buscar_usuario(char user[10])
@@ -840,6 +868,7 @@ bool buscar_usuario(char user[10])
 	
 	while(!feof(arch1))
 	{
+		
 		if(strcmp(reg1.UsuarioAsistente, user)==0)
 		{
 			fclose(arch1);
@@ -852,11 +881,11 @@ bool buscar_usuario(char user[10])
 	fclose(arch1);
 	return false;
 }
-bool buscar_veterinario(int matricula)
+
+bool validacion(int aux,FILE *arch,registrosVeterinarios reg)
 {
-	FILE *arch;
-	
-	registrosVeterinarios reg;
+
+	vets registro;
 	
 	arch = fopen("Veterinarios.dat", "rb");
 	
@@ -865,15 +894,16 @@ bool buscar_veterinario(int matricula)
 	
 	while(!feof(arch))
 	{
-		if(reg.matricula == reg.matricula)
+		
+		if(aux == reg.matricula)
 		{
 			fclose(arch);
-			return false;
+			return true;
 		}
 		fread(&reg, sizeof(reg), 1, arch);
 	}
 	fclose(arch);
-	return true;
+	return false;
 }
 
 
