@@ -12,11 +12,6 @@ struct Fecha{
 	int Anio;
 };
 
-struct Usuarios{
-	char Usuario[10];
-	char Contrasenia[10];
-	char Apellido_y_Nombre[60]; 
-};
 
 struct Veterinario{
 	char Apellido_y_Nombre[60];
@@ -41,9 +36,17 @@ struct Turnos{
 	int DNI_duenio;
 	char Detalle_de_atencion[380];
 };
+
+struct Usuarios{
+	char Usuario[10];
+	char password[32];
+	char Contrasenia[32];
+	char Apellido_y_Nombre[60]; 
+};
+
 	
 void menuprincipal();
-//void InicioSesion();
+void InicioSesion();
 void ListaDeEspera();
 void datosMascota();
 
@@ -51,6 +54,8 @@ void datosMascota();
 
 main()
 {
+	
+	
  	  system("COLOR f3");	
    	  
    	  
@@ -88,7 +93,7 @@ void menuprincipal()
         {
         	case 1:
             system("cls");
-            //InicioSesion();
+            InicioSesion();
             break;
 
         	case 2:
@@ -113,10 +118,58 @@ void menuprincipal()
 }
 			
 	
+void InicioSesion()
+{
+	
+Usuarios reginicio;
+	
+Veterinario reg;
+
+
+
+  bool b=false;
+  char aux_usuario[20],aux_contrasenia[32], aux_apynom[30];
+  FILE *arch_veterinarios = fopen("Veterinarios.dat", "r+b");
+  
+  system("cls");
+  printf("\n\t INICIAR SESION\n\t ");
+  _flushall();
+  printf("\n\t Ingrese su nombre de usuario =====> "); gets(aux_usuario);
+  _flushall();
+  printf("\n\t Ingrese la contrase%ca =====> ",164);  gets(aux_contrasenia); //codico para poder poner la ñ
+  
+  fread(&reginicio, sizeof(reginicio), 1, arch_veterinarios);
+  while(!feof(arch_veterinarios))
+  {
+  	if((strcmp(reginicio.Usuario,aux_usuario)==0) and (strcmp(reginicio.Contrasenia,aux_contrasenia)==0))
+  	{
+  		b=true;
+  		strcpy(aux_apynom,reg.Apellido_y_Nombre);
+	}
+	else{
+		b=false;
+	}
+	fread(&reginicio, sizeof(reginicio), 1, arch_veterinarios);
+  }
+  if(b==false)
+  {
+  	printf("\n el usuario no se encontro registrado");
+  }
+  
+  if (b==true)
+  {
+  	printf("\n\tBIENVENIDO");   puts(aux_apynom);
+  }
+  else{
+  	printf("\n\tERROR ====> Nombre de usuario y contraseña no valido");
+  }
+  fclose(arch_veterinarios); 
+}
 
 void ListaDeEspera()
 {
 	system("COLOR A0");
+	
 		 
 	FILE *arch_turnos = fopen("Turnos.dat", "rb");
 	FILE *arch_veterinarios = fopen("Veterinarios.dat", "rb");
@@ -137,6 +190,7 @@ void ListaDeEspera()
 						
 						printf("\n\tFecha: %d/%d/%d", turnos.fecha.Dia, turnos.fecha.Mes, turnos.fecha.Anio);
 						printf("\n\tVeterinario: %s", reg);	
+						printf("\n\n");
 						fread(&turnos, sizeof(Turnos), 1, arch_turnos);
 						fread(&reg, sizeof(Veterinario), 1, arch_veterinarios);
 					}
@@ -151,6 +205,9 @@ void ListaDeEspera()
 }
 void datosMascota()
 {
+	
+	char buscar_nombre[30];
+	
 	_flushall();
 	system("COLOR B0");
 	Mascota pet;
@@ -158,7 +215,7 @@ void datosMascota()
 	
 	FILE *arch_mascotas;
 	
-	arch_mascotas = fopen ("Mascotas.dat", "rb");
+	arch_mascotas = fopen ("Mascotas.dat", "a+b");
 	fread(&pet, sizeof(pet), 1, arch_mascotas);
 	
 	int o;
@@ -178,28 +235,55 @@ void datosMascota()
 	printf("\n\tLocalidad---> %s",pet.Localidad);
 	printf("\n\tTelefono---> %s",pet.Telefono);
 	
+	//buscar mascota
+	printf("\n\t Ingrese el nombre y apellido de la mascota:");
+	printf("\n\t=====>");
+	_flushall();
+	gets(buscar_nombre);
+	rewind(arch_mascotas);
+	fread(&buscar_nombre, sizeof(char), 1,arch_mascotas);
+
 	
-	printf("\n\tIngrese (1) para crear historia clinica");
-	scanf("%d",&o);
+		if((strcmp(pet.Apellido_y_Nombre,buscar_nombre))==0)
+	    {
+		//en caso de encontrar la mascota se escribe la historia clinica
+		printf("\n\tSE ENCONTRO LA MASCOTA INGRESASA");
+		printf("\n\tIngrese (1) para crear historia clinica--->");
+    	scanf("%d",&o);
 	
-	if(o==1)
-	{
-			printf("\n\tHISTORIA CLINICA DE %s",pet.Apellido_y_Nombre);
+	   if(o==1)
+    	{
+			printf("\n\t     HISTORIA CLINICA DE %s",pet.Apellido_y_Nombre);
 			printf("\n\t-----------------------------------------\n\n");
 			
-			gets(historiaclinica.Detalle_de_atencion);
+			_flushall();
+			printf("\n\t------>");gets(historiaclinica.Detalle_de_atencion);
 			
 			printf("\n\n\n\tHistoria clinica creada con exito-\n");
-	}
-	else
-	{
+    	}
+    	else
+    	{// si se apreta cualquier otro boton que no sea 1 sale del programa
 		exit(1);
 		
+    	 }
+ 
 	}
-	
-	
+	else
+	{ // en caso de no encontrar la mascota pide si vuleve a ingresar la mascota o si quiere salir del programa
+		printf("\n\tNO SE ENCONTRO LA MASCOTA INGRESADA");
+		printf("\n\t PRESIONE [1] PARA VOLVER A INTENTARLO");
+	    printf("\n\t PRESIONE [2] PARA SALIR DEL PROGRAMA");
+	    printf("\n\t======> ");
+	    int p=0;
+	    scanf("%d",&p);
+	    if(p==2)
+	    {
+	    	printf("\n\tSALIENDO....");
+	        exit(1);
+		}
+	}
+ 		
 	getch();
 	
 	fclose(arch_mascotas);
 }
-
