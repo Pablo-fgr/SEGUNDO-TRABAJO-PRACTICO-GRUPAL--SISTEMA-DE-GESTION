@@ -50,6 +50,7 @@ void menuprincipal();
 void InicioSesion();
 void ListaDeEspera();
 void datosMascota();
+void baja(char buscar_nombre[30]);
 
 
 
@@ -140,15 +141,17 @@ Veterinario reg;
   fread(&reg, sizeof(reg), 1, arch_veterinarios);
   while(!feof(arch_veterinarios))
   {
-  	if((reg.Matricula==aux_matricula)and(strcmp(aux_contrasenia,reg.ContraUsuarioVet)==0) )
+  	if((aux_matricula==reg.Matricula)and(strcmp(aux_contrasenia,reg.ContraUsuarioVet)==0))
   	{
-  	    printf("\n\t se encontro el coso");
+  	    printf("\n\t se encontro el Veterinario");
   		getch();
 		break;
   	
 	}
 	  else{
-	    printf("\n\t no se encontro el coso");	
+	    printf("\n\t no se encontro el Veterinario");
+		printf("\nvalor de la matricula %d",reg.Matricula);
+		printf("\nValor que ingresamos de la matricula %d",aux_matricula);	
 		getch();
 		break;
 
@@ -296,7 +299,7 @@ while ( !feof(arch_mascotas) )
 	_flushall();
 	gets(buscar_nombre);
 	
-		if((strcmp(pet.Apellido_y_Nombre,buscar_nombre))==0)
+		if(strcmp(pet.Apellido_y_Nombre,buscar_nombre)==0)
 	    {
 		//en caso de encontrar la mascota se escribe la historia clinica
 		printf("\n\tSE ENCONTRO LA MASCOTA INGRESASA");
@@ -312,6 +315,14 @@ while ( !feof(arch_mascotas) )
 			printf("\n\t------>");gets(historiaclinica.Detalle_de_atencion);
 			
 			printf("\n\n\n\tHistoria clinica creada con exito-\n");
+			
+			fclose(arch_mascotas);
+			remove("Mascotas.dat");
+			printf("\n\n.....BORRADO CON EXITO") ;
+			baja(buscar_nombre);
+			
+
+			getch();	
 			printf("\n\t Quiere cargar otra historia clinica?. [1]si , [2]no");
 			printf("\n\t =====> ");
 			scanf("%d",&a);
@@ -355,3 +366,59 @@ while ( !feof(arch_mascotas) )
 	
 	fclose(arch_mascotas);
 }
+
+void baja(char buscar_nombre[30])
+{
+	bool borrado;
+	bool band;	
+	_flushall();
+	system("COLOR B0");
+	
+	Mascota pet;
+	
+	FILE *arch_mascotas;
+	
+	arch_mascotas = fopen ("Mascotas.dat", "a+b");
+	
+	fread(&pet,sizeof(Mascota),1,arch_mascotas);
+    
+	band=false;
+
+ while(feof(arch_mascotas)==0 && band==false)
+ {
+ if ((strcmp(pet.Apellido_y_Nombre,buscar_nombre)==0) && borrado==false)
+ {
+ borrado=true;
+ fseek(arch_mascotas,- sizeof(pet),SEEK_CUR);
+ fwrite(&pet,sizeof(pet),1,arch_mascotas);
+ printf("Registro dado de baja\n\n");
+ getch();
+ band=true;
+ }
+ else
+ {
+ fread(&pet,sizeof(pet),1,arch_mascotas);
+ }
+ }
+
+ rewind(arch_mascotas);
+ fread(&pet,sizeof(pet),1,arch_mascotas);
+ 
+ while(!feof(arch_mascotas))
+ {
+ if (borrado==false)
+ {
+    printf("\n\tMascota---> %s",pet.Apellido_y_Nombre);
+	printf("\n\tFecha de nacimiento---> %d / %d / %d",pet.Fecha_de_Nacimiento.Dia,pet.Fecha_de_Nacimiento.Mes,pet.Fecha_de_Nacimiento.Anio);
+	printf("\n\tPeso---> %f",pet.Peso);
+	printf("\n\tDNI del dueño---> %d",pet.DNI_duenio);
+	printf("\n\tDomicilio---> %s",pet.Domicilio);
+	printf("\n\tLocalidad---> %s",pet.Localidad);
+	printf("\n\tTelefono---> %s",pet.Telefono);
+ }
+ fread(&pet,sizeof(pet),1,arch_mascotas);
+ }
+ fclose(arch_mascotas);
+}
+
+	
