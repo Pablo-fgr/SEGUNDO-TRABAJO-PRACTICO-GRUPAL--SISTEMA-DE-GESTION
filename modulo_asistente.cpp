@@ -8,6 +8,10 @@
 #include <wchar.h> //Libreria para caracteres
 #include <locale.h> //Libreria para caracteres
 
+
+//typedef char cadena[32];
+
+
 /*--------Declaracion de registros------*/
 
 /*---------Registro Fecha----------*/
@@ -72,6 +76,8 @@ void RegistrarTurno();
 
 void ListadoAtenciones();
 
+//void validar_contrasenia(char cadena[32]);
+
 
 /*-------------------Funcion principal------------------*/
 
@@ -118,6 +124,7 @@ void InicioSesion()
 		fread(&reg1, sizeof(reg1), 1, arch_usuarios);
 		while(!feof(arch_usuarios))
 		{
+			printf("\n\n\t--->Usuario encontrado: %s", reg1.Usuario);
 			if(strcmp(usuario1, reg1.Usuario)==0)
 			{
 				printf("\n\n\t [ Usuario Correcto!...]");
@@ -134,7 +141,49 @@ void InicioSesion()
 			fread(&reg1, sizeof(reg1), 1, arch_usuarios);
 		}  
 		
-	}while(strcmp(usuario1, reg1.Usuario) == 0);
+	}while(strcmp(usuario1, reg1.Usuario) != 0);
+	
+	char cadena[32];
+	
+	printf("\n\n\t--->Ingrese su contraseña: ");
+	_flushall();
+	gets(cadena);
+	
+	do
+	{
+		rewind(arch_usuarios);
+	
+		fread(&reg1, sizeof(reg1), 1, arch_usuarios);
+		while(!feof(arch_usuarios))
+		{
+			printf("\n\n\t---> Contraseña: %s", reg1.Contrasenia);
+			if(strcmp(reg1.Contrasenia, cadena)==0)
+			{
+				printf("\n\n\t [ Contraseña Correcta!...]");
+				getch();
+				break;
+			}	
+			else
+			{
+				printf("\n\n\t [ Contraseña Incorrecta! ]");
+				getch();
+			}
+			
+		
+			fread(&reg1, sizeof(reg1), 1, arch_usuarios);
+		}  
+		
+		printf("\n\n\t---> Contraseña: %s", reg1.Contrasenia);
+		system("pause");
+		
+		printf("\n\n\t--->Ingrese nuevamente la contraseña: ");
+		_flushall();
+		gets(cadena);
+		
+	}while(strcmp(cadena, reg1.Contrasenia) != 0);
+	
+	
+	
 	
 	
 	fclose(arch_usuarios);
@@ -531,3 +580,107 @@ void menu()
     
     
 }
+
+
+/*---------------------------------FUNCION VALIDAR CONTRASEÑA-----------------------------------------*/
+
+/*void validar_contrasenia(char cadena[32])
+{
+	int i, n = 0, band = 0, letra_minuscula = 0, letra_mayuscula = 0, caracter_numerico = 0, caracter_invalido1 = 0;
+	
+	while(band == 0)
+	{
+		n = strlen(cadena);
+		
+		for(i = 0; i < n ;i++)
+		{
+			if(cadena[i]>='A' && cadena[i]<='Z')
+			{
+				letra_mayuscula++;
+			}
+			
+			if(cadena[i]>='a' && cadena[i]<='z')
+			{
+				letra_minuscula++;
+			}
+			
+			if(cadena[i]>='0' && cadena[i]<='9')
+			{
+				caracter_numerico++;
+			}
+			
+			if((cadena[i]=='+') || (cadena[i]==',') || (cadena[i]=='.') || (cadena[i]==';') || (cadena[i]==':') || (cadena[i]=='"')
+			|| (cadena[i]==']') || (cadena[i]=='[') || (cadena[i]== '{') || (cadena[i]== '}')|| (cadena[i]=='(') || (cadena[i]==')')|| (cadena[i]=='?') 
+			|| (cadena[i]=='-') || (cadena[i]=='_') || (cadena[i]=='!') || (cadena[i]==' '))
+			{
+				caracter_invalido1++;
+			}
+		}
+		
+		if(letra_minuscula < 1)
+		{
+			printf("\n\n\t ERROR - La contrasenia debe tener al menos una letra minuscula. ");
+			band = 1;
+		}
+		
+		if(letra_mayuscula < 1)
+		{
+			printf("\n\n\t ERROR - La contrasenia debe tener al menos una letra mayuscula. ");
+			band = 1;
+		}
+		
+		if(caracter_numerico < 1)
+		{
+			printf("\n\n\t ERROR - La contrasenia debe tener al menos un caracter numerico. ");
+			band = 1;
+		}
+		
+		if(caracter_invalido1 != 0)
+		{
+			printf("\n\n\t ERROR - La contrasenia no debe contener signos de puntuacion, ni acentos, ni espacios. ");
+			band = 1;
+		}
+		
+		if(strlen(cadena) < 6)
+		{
+			printf("\n\n\t ERROR - La contrasenia debe tener al menos 6 caracteres. ");
+			band = 1;
+		}
+		
+		if(strlen(cadena)>32)
+		{
+			printf("\n\n\t ERROR - La contrasenia no puede tener mas de 32 caracteres. ");
+			band = 1;
+		}
+		
+		if(numeros_consecutivos(cadena))
+		{
+			printf("\n\n\t ERROR - La contrasenia no puede tener mas de 3 caracteres numericos consecutivos. ");
+			band = 1;
+		}
+		
+		if(letras_consecutivas(cadena))
+		{
+			printf("\n\n\t ERROR - La contrasenia no puede tener letras alfabeticamente consecutivas. ");
+			band = 1;
+		}
+		
+		if(band == 1)
+		{
+			_flushall();
+			
+			printf("\n\n\t--->Ingrese la contrasenia nuevamente: ");
+			gets(cadena);
+			
+			band = 0; letra_minuscula = 0; letra_mayuscula = 0; caracter_numerico = 0; caracter_invalido1 = 0;
+		}
+		else
+		{
+			
+			break;
+			
+		}
+		
+	}
+}
+*/
