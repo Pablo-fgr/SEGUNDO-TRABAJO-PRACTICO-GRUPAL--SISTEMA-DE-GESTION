@@ -1,4 +1,4 @@
-/*-------------Librerias----------------*/
+/*-------------Librerias-----------------*/
 
 #include <stdio.h> 
 #include <stdlib.h> 
@@ -202,7 +202,7 @@ void CargaUsuarios(FILE *p, int n)
      		printf("\tRequisitos\n");
 			printf("\t----------\n");
 				  
-			printf("\n\t(1) - El nombre de usuario debe:\n\n\t(2) - Tener entre 6 y 10 caracteres entre letras, numeros y/o simbolos \n\t del conjunto {+,-,/,*,?,ø,!,°}\n\n\t(3) - Comenzar con una letra minuscula\n\n\t(4) - Tener al menos 2 letras mayusculas\n\n\t(5) - Tener como maximo 3 numeros\n\t");
+			printf("\n\t(1) - El nombre de usuario debe:\n\n\t(2) - Tener entre 6 y 10 caracteres entre letras, numeros y/o simbolos \n\t del conjunto {+,-,/,*,?,¬ø,!,¬°}\n\n\t(3) - Comenzar con una letra minuscula\n\n\t(4) - Tener al menos 2 letras mayusculas\n\n\t(5) - Tener como maximo 3 numeros\n\t");
 		  		
      		printf("\n\t(0) - Para salir-\n\n");
      		
@@ -339,7 +339,7 @@ void CargaUsuarios(FILE *p, int n)
      								system("cls");
      								i=1;
      								
-     								CargaContrasenia(Nombre,n); //Vamos a crear la contraseÒa que acompaÒa al usuario
+     								CargaContrasenia(Nombre,n); //Vamos a crear la contrase√±a que acompa√±a al usuario
      								
 								 	fclose(P);
      								
@@ -429,7 +429,7 @@ void CargaUsuarios(FILE *p, int n)
 }
 
 
-/*------------------------------Funcion para cargar la contraseÒa del usuario---------------------------*/
+/*------------------------------Funcion para cargar la contrase√±a del usuario---------------------------*/
 
 void CargaContrasenia(char Nombre[10],int n)
 {
@@ -474,7 +474,7 @@ void CargaContrasenia(char Nombre[10],int n)
 		gets(Contrasenias);
 	
 		//////////////////////////////////////////////////////////////////////
-		Longitud=strlen(Contrasenias);  //La longitud de la contraseÒa
+		Longitud=strlen(Contrasenias);  //La longitud de la contrase√±a
 		if(Longitud>=6 and Longitud<=32)
 		{
 			i++;
@@ -601,7 +601,7 @@ void CargaContrasenia(char Nombre[10],int n)
 		_flushall();
    	gets(ApeNom);
   
-   		printf("\n\n\t           ------°Usuario creado con exito!------     \n");
+   		printf("\n\n\t           ------¬°Usuario creado con exito!------     \n");
 		printf("\n\n\t                  ------Gracias------      \n");
 		system("pause\n\t");
    
@@ -676,9 +676,9 @@ void IniciarSesion(int &n)
 { 
 	do{
 		printf("\n\n");
-		printf("\n\t**************°Bienvenido al menu principal!*********************");
+		printf("\n\t**************¬°Bienvenido al menu principal!*********************");
 		printf("\n\t**                                                             **");    
-		printf("\n\t**	              øQue cargo posee?                        **");
+		printf("\n\t**	              ¬øQue cargo posee?                        **");
 		printf("\n\t**                                                             **");
 		printf("\n\t** (1)  ->  VETERINARIO                                        **");
 		printf("\n\t**                                                             **");
@@ -866,7 +866,7 @@ void IniciarSesionAsistente(usuarios &PP,int &i)
 	char NombreAUX[10],Contrasenia[32];
 	
 	
-	//EMPEZAMOS CON LA VERIFICACI”N//
+	//EMPEZAMOS CON LA VERIFICACI√ìN//
 	p=fopen("Usuarios.dat","rb");
 	
 	while(!feof(p))
@@ -929,12 +929,12 @@ void IniciarSesionAsistente(usuarios &PP,int &i)
     		do
 			{
 			
-    			printf("\n\tBienvenido, introduce tu contraseÒa!\n");
-    			printf("\n\n\t--->ContraseÒa: ");
+    			printf("\n\tBienvenido, introduce tu contrase√±a!\n");
+    			printf("\n\n\t--->Contrase√±a: ");
     			_flushall();
     			gets(Contrasenia);
     			
-    			if(strcmp("0",Contrasenia)==0){         //verificacion para ver si la contraseÒa es la correcta
+    			if(strcmp("0",Contrasenia)==0){         //verificacion para ver si la contrase√±a es la correcta
     				system("cls");i=0;
     				return;
 				}
@@ -944,7 +944,7 @@ void IniciarSesionAsistente(usuarios &PP,int &i)
     				i=2;
 				}
 				else{
-					printf("\n\tContraseÒa incorrecta\n\t");i=0;
+					printf("\n\tContrase√±a incorrecta\n\t");i=0;
 				}
 				
     			system("pause");
@@ -1008,13 +1008,13 @@ void RegistrarMascota(usuarios PP,mascota &Oscar,int i)
 		system("cls");
 	
 		//CARGA DE LOS DATOS//
-		printf("\n\tIngrese el apellido y nombre del dueÒo de la mascota");
+		printf("\n\tIngrese el apellido y nombre del due√±o de la mascota");
 	
 		printf("\n\t=====>");
 	
 		_flushall();gets(Oscar.ApellidoNombre);
 	
-		printf("\n\tIngrese el DNI del dueÒo");
+		printf("\n\tIngrese el DNI del due√±o");
 		printf("\n\t=====>");
 		scanf("%d",&Oscar.DNI_duenio);
 	
@@ -1054,10 +1054,10 @@ void RegistrarMascota(usuarios PP,mascota &Oscar,int i)
 	
 	
 	
-			printf("\n\tApellido y nombre del dueÒo---> %s",Oscar.ApellidoNombre);
+			printf("\n\tApellido y nombre del due√±o---> %s",Oscar.ApellidoNombre);
 			printf("\n\tDomicilio---> %s",Oscar.Domicilio);
 			printf("\n\tLocalidad---> %s",Oscar.Localidad);
-			printf("\n\tDNI del dueÒo---> %d",Oscar.DNI_duenio);
+			printf("\n\tDNI del due√±o---> %d",Oscar.DNI_duenio);
 			printf("\n\tTelefono--->%s",Oscar.Telefono);
 			printf("\n\tFecha de nacimiento mascota--->%d/%d/%d",Oscar.FechaNacimiento.Dia,Oscar.FechaNacimiento.Mes,Oscar.FechaNacimiento.Anio);
 			printf("\n\tPeso---> %.2f",Oscar.Peso);
@@ -1080,7 +1080,7 @@ void RegistrarMascota(usuarios PP,mascota &Oscar,int i)
 	
 	fclose(p);
 
-	printf("\nLos datos fueron cargados existosamente... volviendo al men˙ de asistente\n");
+	printf("\nLos datos fueron cargados existosamente... volviendo al men√∫ de asistente\n");
 	
 	system("pause");system("cls");
 }
@@ -1104,11 +1104,11 @@ void RegistrarTurno(usuarios PP,mascota Oscar,int i)
   
    if(i==0)
    {
-   		printf("\n\tInicie sesiÛn primero porfavor.\n\n");
+   		printf("\n\tInicie sesi√≥n primero porfavor.\n\n");
    		system("pause");system("cls");return;
    }
 	else{
-		printf("\n\tBienvenido a la secciÛn de turnos %s.\n\n",PP.ApellidoNombre);
+		printf("\n\tBienvenido a la secci√≥n de turnos %s.\n\n",PP.ApellidoNombre);
 		system("pause");system("cls");
 	}
 	
@@ -1141,7 +1141,7 @@ void RegistrarTurno(usuarios PP,mascota Oscar,int i)
     
    			printf("\t----------------------------------------------------------------");
 			
-			printf("\n\n\t--->DNI del dueÒo: ");
+			printf("\n\n\t--->DNI del due√±o: ");
 			
 			scanf("%d",&DNI);
 		
@@ -1149,7 +1149,7 @@ void RegistrarTurno(usuarios PP,mascota Oscar,int i)
 			
 			fread(&PET,sizeof(mascota),1,p);
 		
-			while(!feof(p) and N==0){ //Verificamos si el dni del dueÒo esta en el sistema
+			while(!feof(p) and N==0){ //Verificamos si el dni del due√±o esta en el sistema
 			
 			
 				if(DNI==PET.DNI_duenio)
@@ -1204,7 +1204,7 @@ void RegistrarTurno(usuarios PP,mascota Oscar,int i)
 	
 				}while(turn.fecha.Mes < 1 || turn.fecha.Mes > 12);
 		
-				printf("\n\t\t->AÒo: ");scanf("%d",&turn.fecha.Anio);
+				printf("\n\t\t->A√±o: ");scanf("%d",&turn.fecha.Anio);
 			
 				system("cls");
 				
@@ -1222,7 +1222,7 @@ void RegistrarTurno(usuarios PP,mascota Oscar,int i)
 	    		printf("\t************************************************************\n\n");
 		
 			}else{
-					printf("\n\t---> DueÒo de la mascota no encontrado, verifique su DNI porfavor.\n\n");
+					printf("\n\t---> Due√±o de la mascota no encontrado, verifique su DNI porfavor.\n\n");
 					system("pause");system("cls");
 				}
 		
@@ -1529,7 +1529,7 @@ void MenuVeterinario(int n){
 		{
 		
 			system("cls");
-			printf("\n\n\t---> Por favor inicie sesiÛn: ");
+			printf("\n\n\t---> Por favor inicie sesi√≥n: ");
 			IniciarSeccion(vet,b);		
 	
 		}
@@ -1543,7 +1543,7 @@ void MenuVeterinario(int n){
 		if(b==0 and n==2)
 		{
 			system("cls");
-			printf("\n\n\t---> Debe iniciar sesiÛn primero\n");
+			printf("\n\n\t---> Debe iniciar sesi√≥n primero\n");
 			system("pause");system("cls");
 		}
 		
@@ -1556,7 +1556,7 @@ void MenuVeterinario(int n){
 		if(b==0 and n==3)
 		{
 			system("cls");
-			printf("\n\n\t---> Debe iniciar sesiÛn primero\n");
+			printf("\n\n\t---> Debe iniciar sesi√≥n primero\n");
 			system("pause");system("cls");
 		}
 		
@@ -1595,7 +1595,7 @@ void IniciarSeccion(veterinarios vet,int &b)
 		printf("\n\t                      INICIO DE SESION PARA VETERINARIOS                          ");
 		printf("\n\t                      ----------------------------------                      \n\n");
 									    
-    	printf("\n\tPara volver al men˙i anterior coloque 0  como respuestas.");
+    	printf("\n\tPara volver al men√∫i anterior coloque 0  como respuestas.");
     
   	 	printf("\n\t----------------------------------------------------------------");
 		
@@ -1645,7 +1645,7 @@ void IniciarSeccion(veterinarios vet,int &b)
 				
 		
 				_flushall();
-				printf("\n\n\t---> Introduzca La contraseÒa del usuario: %s\n - si coloca 0 saldra de la carga de usuario\n\n\t---> ContraseÒa: ",iniusuario);
+				printf("\n\n\t---> Introduzca La contrase√±a del usuario: %s\n - si coloca 0 saldra de la carga de usuario\n\n\t---> Contrase√±a: ",iniusuario);
 				gets(inicontrasenia);
 		
 				if(strcmp(inicontrasenia,"0")==0)
@@ -1700,14 +1700,14 @@ void VisualizarListaDeEspera(turnos turn,veterinarios vet,int &k)
 	while(!feof(p))
 	{
 		TurnosTotales++;
-			printf("\n\n\t--->DNI del dueÒo: ",turn.Dni_Dueno);
+			printf("\n\n\t--->DNI del due√±o: ",turn.Dni_Dueno);
 			printf("\n\n\t--->Fecha del turno: %d/%d/%d",turn.fecha.Dia,turn.fecha.Mes,turn.fecha.Anio);
 			printf("\n");
 			fread(&turn,sizeof(turnos),1,p);
 	}
 	do
 	{
-		printf("\n\n\t---> Desea elegir un turno para atender m·ss adelante?(1:SI,2:NO)\n");
+		printf("\n\n\t---> Desea elegir un turno para atender m√°ss adelante?(1:SI,2:NO)\n");
 		printf("OPCION: ");
 		scanf("%d",&n);
 	}while(n!=1 and n!=2);
@@ -1764,12 +1764,12 @@ void CargarInforme(turnos turn,veterinarios vet,int k)
 	printf("\n\t                       REGISTRO DEL INFORME                          ");
 	printf("\n\t                      ----------------------                      \n\n");
 									    
-    printf("\n\n\t---> Usted SeleccionÛ El Turno %d",k);
+    printf("\n\n\t---> Usted Seleccion√≥ El Turno %d",k);
 
 	
-	printf("\n\n\t--->DNI del dueÒo: %d",turn.Dni_Dueno);
+	printf("\n\n\t--->DNI del due√±o: %d",turn.Dni_Dueno);
 
-	printf("\n\n\t--->Describa la evoluciÛn de la mascota: \n ");
+	printf("\n\n\t--->Describa la evoluci√≥n de la mascota: \n ");
 	
 	_flushall();
 
